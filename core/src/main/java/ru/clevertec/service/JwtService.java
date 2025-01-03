@@ -28,13 +28,5 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
-
-    public Claims validateToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(secret)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
 }
 

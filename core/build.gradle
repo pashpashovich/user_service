@@ -15,4 +15,5 @@ dependencies {
     implementation("org.springframework.security:spring-security-web:6.4.2")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 
+
 }

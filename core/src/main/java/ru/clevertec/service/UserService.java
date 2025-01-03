@@ -2,13 +2,17 @@ package ru.clevertec.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.clevertec.domain.Role;
 import ru.clevertec.domain.User;
+import ru.clevertec.dto.UserDetailsDto;
 import ru.clevertec.dto.UserRegisterRequest;
 import ru.clevertec.port.RoleRepositoryPort;
 import ru.clevertec.port.UserRepositoryPort;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +41,10 @@ public class UserService {
             throw new BadCredentialsException("Неверный логин или пароль");
         }
         return jwtService.generateToken(user.getUsername(), user.getRole().getName());
+    }
+
+    public UserDetailsDto loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        return new UserDetailsDto(user.getUsername(), List.of(user.getRole().getName()));
     }
 }
