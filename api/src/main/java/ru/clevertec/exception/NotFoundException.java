@@ -1,4 +1,4 @@
-package ru.clevertec.exception_handler;
+package ru.clevertec.exception;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException(String message) {

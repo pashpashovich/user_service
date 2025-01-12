@@ -14,6 +14,7 @@ import ru.clevertec.api.ApiResponse;
 import ru.clevertec.dto.UserDetailsDto;
 import ru.clevertec.dto.UserLoginRequest;
 import ru.clevertec.dto.UserRegisterRequest;
+import ru.clevertec.mapper.UserMapper;
 import ru.clevertec.service.UserService;
 
 @RestController
@@ -22,11 +23,12 @@ import ru.clevertec.service.UserService;
 @Validated
 public class UserController {
     private final UserService userService;
+    private final UserMapper userMapper;
 
     @GetMapping("/{username}")
     public ResponseEntity<ApiResponse<UserDetailsDto>> getUserByUsername(@PathVariable String username) {
         return ResponseEntity.ok(ApiResponse.<UserDetailsDto>builder()
-                .data(userService.loadUserByUsername(username))
+                .data(userMapper.toDto(userService.loadUserByUsername(username)))
                 .status(true)
                 .message("Пользователь получен")
                 .build());
@@ -34,7 +36,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<String>> register(@Valid @RequestBody UserRegisterRequest request) {
-        userService.registerUser(request);
+        userService.registerUser(userMapper.toUserRegister(request));
         return ResponseEntity.ok(ApiResponse.<String>builder()
                 .message("Пользователь успешно зарегистрирован")
                 .status(true)

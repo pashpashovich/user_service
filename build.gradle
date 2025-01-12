@@ -2,31 +2,46 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+    id 'org.openapi.generator' version '7.10.0'
 }
 
 group = 'ru.clevertec'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
+}
+
+ext {
+    jacksonNullableVersion = '0.2.6'
+    securityVersion = '6.4.2'
+    mapstructVersion = '1.4.2.Final'
+    springdocVersion = '2.8.1'
+    gsonVersion = '2.11.0'
+    gsonFireVersion = '1.9.0'
+    okhttpVersion = '4.12.0'
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'org.springframework.boot'
+    apply plugin: 'jacoco'
+    apply plugin: 'org.openapi.generator'
 
 
     group = 'ru.clevertec'
     version = '0.0.1-SNAPSHOT'
 
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 
@@ -38,8 +53,22 @@ subprojects {
 
     dependencies {
         compileOnly 'org.projectlombok:lombok'
+
         annotationProcessor 'org.projectlombok:lombok'
+        annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+        implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation "org.springframework.security:spring-security-web:${securityVersion}"
+        implementation "org.mapstruct:mapstruct:${mapstructVersion}"
         implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation "org.openapitools:jackson-databind-nullable:${jacksonNullableVersion}"
+        implementation "org.springdoc:springdoc-openapi-starter-common:${springdocVersion}"
+        implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+        implementation 'ru.clevertec:exception-starter:1.0'
+        implementation "com.google.code.gson:gson:${gsonVersion}"
+        implementation "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
+        implementation "io.gsonfire:gson-fire:${gsonFireVersion}"
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 }

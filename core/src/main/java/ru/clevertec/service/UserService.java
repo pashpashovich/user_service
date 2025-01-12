@@ -7,8 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.clevertec.domain.Role;
 import ru.clevertec.domain.User;
-import ru.clevertec.dto.UserDetailsDto;
-import ru.clevertec.dto.UserRegisterRequest;
+import ru.clevertec.domain.UserDetailsFromDto;
+import ru.clevertec.domain.UserRegisterRequestFromDto;
 import ru.clevertec.port.RoleRepositoryPort;
 import ru.clevertec.port.UserRepositoryPort;
 
@@ -23,7 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public void registerUser(UserRegisterRequest request) {
+    public void registerUser(UserRegisterRequestFromDto request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new IllegalArgumentException("Такое имя пользователя уже существует");
         }
@@ -43,8 +43,8 @@ public class UserService {
         return jwtService.generateToken(user.getUsername(), user.getRole().getName());
     }
 
-    public UserDetailsDto loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetailsFromDto loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        return new UserDetailsDto(user.getUsername(), List.of(user.getRole().getName()));
+        return new UserDetailsFromDto(user.getUsername(), List.of(user.getRole().getName()));
     }
 }

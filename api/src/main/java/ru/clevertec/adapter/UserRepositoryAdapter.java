@@ -3,7 +3,7 @@ package ru.clevertec.adapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.clevertec.domain.User;
-import ru.clevertec.exception_handler.NotFoundException;
+import ru.clevertec.exception.NotFoundException;
 import ru.clevertec.mapper.UserMapper;
 import ru.clevertec.port.UserRepositoryPort;
 import ru.clevertec.repository.UserRepository;

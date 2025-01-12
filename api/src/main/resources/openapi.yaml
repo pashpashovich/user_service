@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: News Service API
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    UserDetailsDto:
+      type: object
+      properties:
+        username:
+          type: string
+        authorities:
+          type: array
+          items:
+            type: string
+      required:
+        - username
+        - authorities
+    UserLoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    UserRegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+      required:
+        - username
+        - password
+        - role
+

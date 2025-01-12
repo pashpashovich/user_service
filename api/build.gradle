@@ -4,14 +4,43 @@ tasks.named('bootJar') {
 
 dependencies {
     implementation project(':core')
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.4.1'
     implementation("org.liquibase:liquibase-core:4.30.0")
-    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation("org.postgresql:postgresql:42.7.4")
-    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
-    implementation("org.springframework.security:spring-security-web:6.4.2")
+}
+
+openApiGenerate {
+    generatorName = "java"
+    inputSpec = "${projectDir}/src/main/resources/openapi.yaml"
+    outputDir = "${projectDir}/src/main/generated/openapi"
+    apiPackage = "ru.clevertec.api"
+    modelPackage = "ru.clevertec.dto"
+    invokerPackage = "ru.clevertec.invoker"
+    additionalProperties = [
+            useLombok: 'true'
+    ]
+    configOptions = [
+            openApiNullable               : "false",
+            interfaceOnly                 : "true",
+            additionalModelTypeAnnotations: '@lombok.Data @lombok.AllArgsConstructor @lombok.Builder',
+            useJakartaEe                  : 'true',
+            useSpringBoot3: 'true'
+    ]
+    generateApiDocumentation = false
+    generateApiTests = false
+    generateModelTests = false
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "${projectDir}/src/main/generated/openapi"
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.openApiGenerate
 }
